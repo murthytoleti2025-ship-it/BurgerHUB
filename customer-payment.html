@@ -1,0 +1,63 @@
+{% include "customer-head-active.html" %}
+
+<section class="section section-divider gray about" id="about" style="margin-top: 300px">
+    <div class="hero-content" style="display: flex; justify-content: center; align-items: center">
+        <form
+            action="/verify-transaction"
+            method="POST"
+            class="footer-form"
+            style="width: 50%"
+            enctype="multipart/form-data"
+        >
+            <p class="footer-list-title">Add Payment Card Details</p>
+            <input
+                style="margin-bottom: 20px"
+                type="text"
+                name="card_name"
+                required
+                placeholder="Name"
+                aria-label="Name"
+                class="input-field"
+            /><select name="card_type" id="" required>
+                <option value="">Select Card</option>
+                <option value="debit">Debit card</option>
+                <option value="credit">Credit card</option>
+            </select>
+
+            <label style="margin-top: 15px; display: inline-block" for="total">Total amount($)</label>
+            <input
+                style="margin-bottom: 20px"
+                type="number"
+                name="total"
+                readonly
+                value="{{total}}"
+                placeholder="Total"
+                aria-label="price"
+                class="input-field"
+            /><input
+                style="margin-bottom: 20px"
+                type="text"
+                name="card_number"
+                pattern="\d{16}"
+                maxlength="16"
+                required
+                placeholder="Card Number "
+                aria-label="description"
+                class="input-field"
+            />
+            <input type="hidden" name="order_id" value="{{order_id}}" />
+            <input
+                required
+                type="text"
+                pattern="\d{2}/\d{2}"
+                name="expiry"
+                placeholder="Expiry MM/YY"
+                class="input-field"
+                style="margin-bottom: 20px"
+            />
+            <button type="submit" class="btn">Complete Payment</button>
+        </form>
+    </div>
+</section>
+
+{% include "footer.html" %}

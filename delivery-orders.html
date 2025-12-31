@@ -1,0 +1,74 @@
+{% include "delivery-head.html" %}
+
+<section id="about">
+    <div class="container">
+        {% if status == 'assigned'%}
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">Orders to pickup</h2>
+        {% elif status == 'out for delivery'%}
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">
+            Orders out for delivery
+        </h2>
+        {% elif status == 'delivered' %}
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">Completed Orders</h2>
+        {%endif%}
+        <section
+            id="cart"
+            class="section-p1"
+            style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+        >
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <td>Order Id</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for order in orders%}
+                    <tr>
+                        <td>{{ getUpperIdFromOrderId(order['_id']) }}</td>
+
+                        <td>{{order['status']}}</td>
+
+                        <td>
+                            {%if order['status'] == 'assigned':%}
+                            <div>
+                                <div class="form accept-reject">
+                                    <div class="input-section" style="display: inline-block; margin: auto">
+                                        <a
+                                            href="/change-delivery-status?status=out for delivery&order_id={{order['_id']}}"
+                                        >
+                                            <button class="btn btn-normal">Pickup</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'out for delivery'%}
+                            <div>
+                                <div class="form accept-reject" style="display: inline-block; margin: auto">
+                                    <a href="/change-delivery-status?status=delivered&order_id={{order['_id']}}">
+                                        <button class="btn btn-normal">Food handovered</button>
+                                    </a>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'delivered'%}
+                            <div>
+                                <div class="form">
+                                    <div class="input-section" style="display: inline-block; margin: auto">
+                                        No Action
+                                    </div>
+                                </div>
+                            </div>
+                            {%endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>
+
+{% include "footer.html" %}

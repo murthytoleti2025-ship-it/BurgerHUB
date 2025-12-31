@@ -1,0 +1,141 @@
+{% include "customer-head-active.html" %}
+
+<section id="about">
+    <div class="container">
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">
+            Selected items on plate
+        </h2>
+        <section
+            id="cart"
+            class="section-p1"
+            style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+        >
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <td>Delete</td>
+                        <td>Menu Item</td>
+                        <td>Item Name</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Subtotal</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product_in_cart in products_in_cart %} {% set product =
+                    get_product_by_product_id(product_in_cart['product_id']) %}
+                    <tr>
+                        <td>
+                            <a href="/remove?product_id={{product['_id']}}&order_id={{order['_id']}}">Delete</a>
+                        </td>
+                        <td>
+                            <div style="display: inline-block">
+                                <img src="../static/images/{{product['picture']}}" alt="" />
+                            </div>
+                        </td>
+                        <td>{{product['name']}}</td>
+                        <td>${{product['price']}}</td>
+                        <td>
+                            <div style="display: inline-block; border: 1px solid gray">
+                                <input
+                                    type="number"
+                                    value="{{product_in_cart['quantity']}}"
+                                    data-product-id="{{product['_id']}}"
+                                    data-order-id="{{order['_id']}}"
+                                />
+                            </div>
+                        </td>
+                        <td>{{product['price'] | float * product_in_cart['quantity'] | int}}</td>
+                    </tr>
+                    {%endfor%}
+                    <tr style="border-top: 3px dashed #eb8314">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="padding-bottom: 20px">
+                            <label for="delivery_type">Select Delivery Mode</label>
+                            <select
+                                name="delivery_type"
+                                id=""
+                                style="display: block; margin-top: 4px; border: 1px solid gray; padding: 5px"
+                                class="btn btn-normal"
+                            >
+                                {% if order['delivery_type'] == 'delivery'%}
+                                <option selected value="delivery">Delivery</option>
+                                <option value="pickup">Pickup</option>
+                                {%else%}
+                                <option value="delivery">Delivery</option>
+                                <option selected value="pickup">Pickup</option>
+                                {%endif%}
+                            </select>
+                        </td>
+                        <td></td>
+                        <td>
+                            SubTotal : ${{subtotal | float}}<br />
+                            Tax : ${{tax | float}} <br />
+                            {%if delivery_type == 'delivery' %} Delivery Charges : ${{delivery_fee | float}} <br />
+                            {%endif%} Total : ${{total | float}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <div style="display: flex; justify-content: end">
+            <button class="btn btn-hover" style="width: 265px; margin-top: 30px">
+                <a href="/payment-portal?order_id={{order['_id']}}&total={{total}}">Checkout</a>
+            </button>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}
+<script>
+    // Add event listeners to all quantity input fields
+    const quantityInputs = document.querySelectorAll('input[type="number"]')
+    quantityInputs.forEach((input) => {
+        input.addEventListener('change', updateSubtotal)
+    })
+
+    function updateSubtotal(event) {
+        const product_id = event.target.dataset.productId
+        const order_id = event.target.dataset.orderId
+        const quantity = event.target.value
+        console.log(product_id, order_id)
+        if (quantity == 0) {
+            const redirectUrl = `/remove?product_id=${encodeURIComponent(product_id)}&order_id=${order_id}`
+            window.location.href = redirectUrl
+        } else {
+            const redirectUrl = `/add-to-plate?product_id=${encodeURIComponent(
+                product_id
+            )}&qty=${quantity}&operation=qty`
+            window.location.href = redirectUrl
+        }
+
+        // You can perform any additional logic or update the total here if needed
+    }
+
+    const deliveryTypeSelect = document.querySelector('select[name="delivery_type"]')
+    deliveryTypeSelect.addEventListener('change', updateDeliveryType)
+
+    async function updateDeliveryType(event) {
+        const selectedDeliveryType = event.target.value
+        const url = `/update-delivery-type?delivery_type=${selectedDeliveryType}`
+
+        try {
+            // Make a POST request to update the delivery type
+            const response = await fetch(url, { method: 'POST' })
+
+            // Check if the request was successful
+            if (response.ok) {
+                // Redirect back to the view-plate page
+                window.location.href = '/view-plate'
+            } else {
+                console.error('Failed to update delivery type:', response.statusText)
+                window.location.href = '/view-plate'
+            }
+        } catch (error) {
+            console.error('Error updating delivery type:', error)
+        }
+    }
+</script>

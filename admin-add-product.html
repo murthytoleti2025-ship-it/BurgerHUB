@@ -1,0 +1,105 @@
+{% include "admin-head-active.html" %}
+
+<section class="section section-divider gray about" id="about" style="margin-top: 300px">
+    <div class="hero-content" style="display: flex; justify-content: center; align-items: center">
+        <form action="add-menu-item" method="POST" class="footer-form" style="width: 50%" enctype="multipart/form-data">
+            <p class="footer-list-title">Add Menu Item</p>
+            <input
+                style="margin-bottom: 20px"
+                type="text"
+                name="name"
+                required
+                placeholder="Menu Item Name"
+                aria-label="Category Name"
+                class="input-field"
+            /><select name="category_id" id="" required>
+                <option value="">Select Category</option>
+                {% for category in categories: %}
+                <option value="{{category['_id']}}">{{getCategoryNameById(category['_id'])}}</option>
+                {% endfor %}</select
+            ><input
+                style="margin-bottom: 20px"
+                type="number"
+                name="price"
+                step="0.01"
+                required
+                placeholder="Price"
+                aria-label="price"
+                class="input-field"
+            /><input
+                style="margin-bottom: 20px"
+                type="text"
+                name="description"
+                required
+                placeholder="Description"
+                aria-label="description"
+                class="input-field"
+            />
+            <div>
+                <label for="fileInput" class="file-input-label">Upload Picture</label>
+                <input type="file" id="fileInput" name="picture" placeholder="load picture" />
+            </div>
+
+            <button type="submit" class="btn">Add Menu Item</button>
+        </form>
+    </div>
+</section>
+
+<section class="section food-menu" id="menu">
+    <div class="container">
+        <p class="section-subtitle">Menu Dishes</p>
+
+        <h2 class="h2 section-title">Our Delicious <span class="span">Foods</span></h2>
+
+        <p class="section-text">An original then, an original now.</p>
+
+        <ul class="fiter-list">
+            <li>
+                <button class="filter-btn active">All</button>
+            </li>
+            {% for category in categories:%}
+            <li>
+                <button class="filter-btn active">
+                    <a href="/get-products-by-category?_id={{category['_id']}}">{{category['category_name']}}</a>
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <ul class="food-menu-list">
+            {% for product in products:%}
+            <li>
+                <div class="food-menu-card">
+                    <div class="card-banner">
+                        <img
+                            src="../static/images/{{product['picture']}}"
+                            width="300"
+                            height="300"
+                            loading="lazy"
+                            alt="{{product['name']}}"
+                            class="w-100"
+                        />
+
+                        <button class="btn food-menu-btn">
+                            <a href="/view-product?product_id={{product['_id']}}">View Product</a>
+                        </button>
+                    </div>
+
+                    <div class="wrapper">
+                        <p class="category">{{getCategoryNameById(product['category_id'])}}</p>
+                    </div>
+
+                    <h3 class="h3 card-title">{{product['name']}}</h3>
+
+                    <div class="price-wrapper">
+                        <p class="price-text">Price:</p>
+
+                        <data class="price">${{product['price']}}</data>
+                    </div>
+                </div>
+            </li>
+            {% endfor%}
+        </ul>
+    </div>
+</section>
+{% include "footer.html" %}

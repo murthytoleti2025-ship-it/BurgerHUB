@@ -1,0 +1,64 @@
+{% include "header.html" %}
+<main>
+    <article>
+        <section class="hero" id="home" style="background-image: url('../static/images/hero-bg.jpg')">
+            <div class="container">
+                <div class="hero-content" style="width: 60%">
+                    <form action="login-verify" class="footer-form" method="POST">
+                        <p class="footer-list-title">Admin Login</p>
+                        <input type="hidden" name="role" value="Admin" />
+                        <input
+                            style="margin-bottom: 20px"
+                            type="text"
+                            name="email"
+                            required
+                            placeholder="Username"
+                            aria-label="Address"
+                            class="input-field"
+                            value="{{ username | default('')}}"
+                        />
+
+                        <input
+                            style="margin-bottom: 20px"
+                            type="password"
+                            name="password"
+                            required
+                            placeholder="Password"
+                            aria-label="Your password"
+                            class="input-field"
+                        />
+
+                        <button type="submit" class="btn">Login</button>
+                        <span id="signup-link" style="display: flex; justify-content: center; gap: 10px">
+                            <a href="/sign-up" style="text-decoration: underline">Sign-up</a>
+                            <a href="/login" style="text-decoration: underline">login</a>
+                            <a href="/delivery-login" style="text-decoration: underline">delivery-login</a>
+                        </span>
+                    </form>
+                </div>
+
+                <figure class="hero-banner">
+                    <img
+                        src="../static/images/hero-banner-bg.png"
+                        width="820"
+                        height="716"
+                        alt=""
+                        aria-hidden="true"
+                        class="w-100 hero-img-bg"
+                    />
+
+                    <img
+                        src="../static/images/hero-banner.png"
+                        width="700"
+                        height="637"
+                        loading="lazy"
+                        alt="Burger"
+                        class="w-100 hero-img"
+                    />
+                </figure>
+            </div>
+        </section>
+    </article>
+</main>
+
+{% include "footer.html" %}

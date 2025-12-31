@@ -1,0 +1,61 @@
+{%if 'role' in session and session['role'] == 'Customer'%} {% include "customer-head-active.html" %} {%elif 'role' in
+session and session['role'] == 'Admin'%} {% include "admin-head-active.html" %} {% elif 'role' not in session %} {%
+include "header-active.html" %} {% endif %}
+
+<section class="section section-divider gray about" id="about">
+    <div class="container">
+        <div class="about-banner">
+            <img
+                src="../static/images/{{product['picture']}}"
+                width="509"
+                height="459"
+                loading="lazy"
+                alt="Burger with Drinks"
+                class="w-100 about-img"
+            />
+        </div>
+
+        <div class="about-content">
+            <h2 class="h2 section-title">{{product['name']}}</h2>
+
+            <p class="section-text">{{product['description']}}</p>
+
+            <span class="span" style="color: #eb8314; margin-top: 20px; font-size: 18px"
+                >{{getCategoryNameById(product['category_id'])}}</span
+            >
+            <!-- <ul class="about-list" style="margin-top: 5px">
+                {% if product.topping_choice %} {% for topping in product.topping_choice %}
+                <li class="about-item">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                    <span class="span">{{ topping['topping_name'] }}</span>
+                </li>
+                {% endfor %} {% else %}
+
+                <li>No topping</li>
+                {% endif %}
+            </ul> -->
+
+            <div class="price-wrapper">
+                <p class="price-text" style="font-size: 20px">
+                    Price:
+                    <data class="price">${{product['price']}}</data>
+                </p>
+            </div>
+            {% if 'role' in session and session['role']=='Customer' %}
+            <button class="btn btn-hover">
+                <a href="/add-to-plate?product_id={{product['_id']}}&qty=1">Add to plate</a>
+            </button>
+            {% elif 'role' in session and session['role']=='Admin' %}
+            <button class="btn btn-hover">
+                <a href="/remove-product?product_id={{product['_id']}}">Delete menu item</a>
+            </button>
+            {% elif 'role' not in session %}
+            <button class="btn btn-hover">
+                <a href="/login">Add to plate</a>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

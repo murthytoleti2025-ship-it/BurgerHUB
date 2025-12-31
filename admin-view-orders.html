@@ -1,0 +1,132 @@
+{% include "admin-head-active.html" %}
+
+<section id="about">
+    <div class="container">
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">Manage Orders</h2>
+        <section
+            id="cart"
+            class="section-p1"
+            style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+        >
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <td>Order Id</td>
+                        <td>Order Date</td>
+                        <td>Order Total</td>
+                        <td>Status</td>
+                        <td>Delivery Mode</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for order in orders%}
+                    <tr>
+                        <td>{{ getUpperIdFromOrderId(order['_id']) }}</td>
+                        <td>{{order['order_date']}}</td>
+                        <td>{{order['amount']}}</td>
+                        <td>{{order['status']}}</td>
+                        <td>{{order['delivery_type']}}</td>
+                        <td>
+                            {% if order['delivery_type'] == "delivery" %} {%if order['status'] == 'pending':%}
+                            <div>
+                                <div class="form accept-reject">
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=rejected">
+                                            <button class="btn btn-normal">Reject</button>
+                                        </a>
+                                    </div>
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=accepted">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">Accept</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'rejected'%}
+                            <div>
+                                <div>
+                                    <span>No Action</span>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'accepted'%}
+                            <div>
+                                <div class="form">
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=prepared">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">
+                                                Order Prepared
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'prepared'%}
+                            <form action="admin-order" class="form">
+                                <input type="hidden" name="order_id" value="{{order['_id']}}" />
+                                <input type="hidden" name="action" value="assigned" />
+                                <div class="input-section">
+                                    <select name="delivery_id" required class="btn btn-normal">
+                                        <option value="">Assign to Delivery</option>
+                                        {%for agent in delivery_agents:%}
+                                        <option value="{{agent['_id']}}">{{agent['name']}}</option>
+                                        {%endfor%}
+                                    </select>
+                                    <button style="padding: 5px 20px" class="normal">Assign</button>
+                                </div>
+                            </form>
+                            {%endif%} {%elif order['delivery_type'] == 'pickup'%} {%if order['status'] == 'pending' %}
+                            <div>
+                                <div class="form accept-reject">
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=rejected">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">Reject</button>
+                                        </a>
+                                    </div>
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=accepted">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">Accept</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'rejected'%}
+                            <div>
+                                <span>No Action</span>
+                            </div>
+                            {%elif order['status'] == 'accepted'%}
+                            <div>
+                                <div class="form">
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=prepared">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">
+                                                Order Prepared
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%elif order['status'] == 'prepared'%}
+                            <div>
+                                <div class="form">
+                                    <div class="input-section">
+                                        <a href="/admin-order?order_id={{order['_id']}}&action=picked">
+                                            <button style="padding: 5px 20px" class="btn btn-normal">
+                                                Picked-up food
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endif%} {%endif%}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>
+
+{% include "footer.html" %}
