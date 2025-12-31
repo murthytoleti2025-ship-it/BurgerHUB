@@ -1,0 +1,54 @@
+{% include "admin-head-active.html" %} {% if message %}
+<div class="error-message" id="error-msg">{{ message }}</div>
+{% endif %}
+
+<section class="section section-divider gray about" id="about" style="margin-top: 300px">
+    <div class="container">
+        <div class="about-banner">
+            <div class="hero-content">
+                <form action="/admin-add-category" method="POST" class="footer-form">
+                    <p class="footer-list-title">Add Menu Category</p>
+                    <input
+                        style="margin-bottom: 20px"
+                        type="text"
+                        name="category_name"
+                        required
+                        placeholder="Category Name"
+                        aria-label="Category Name"
+                        class="input-field"
+                    />
+
+                    <button type="submit" class="btn">Add Category</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="about-content" style="margin-top: -100px">
+            <section
+                id="cart"
+                class="section-p1"
+                style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+            >
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <td>Remove</td>
+                            <td>Category Name</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {%for category in categories: %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td style="font-size: 16px">{{category['category_name']}}</td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

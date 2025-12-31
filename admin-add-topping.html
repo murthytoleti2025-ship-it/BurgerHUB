@@ -1,0 +1,52 @@
+{% include "admin-head-active.html" %}
+
+<section class="section section-divider gray about" id="about" style="margin-top: 300px">
+    <div class="container">
+        <div class="about-banner">
+            <div class="hero-content">
+                <form action="add-topping" method="POST" class="footer-form">
+                    <p class="footer-list-title">Add Menu Topping</p>
+                    <input
+                        style="margin-bottom: 20px"
+                        type="text"
+                        name="topping_name"
+                        required
+                        placeholder="Topping Name"
+                        aria-label="topping name"
+                        class="input-field"
+                    />
+
+                    <button type="submit" class="btn">Add Topping</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="about-content" style="margin-top: -100px">
+            <section
+                id="cart"
+                class="section-p1"
+                style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+            >
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <td>Remove</td>
+                            <td>Category Name</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {%for topping in toppings: %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td style="font-size: 16px">{{topping['topping_name']}}</td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

@@ -1,0 +1,83 @@
+{% include "admin-head-active.html" %}
+
+<section class="section section-divider gray about" id="about" style="margin-top: 300px">
+    <div class="container">
+        <div class="about-banner">
+            <div class="hero-content">
+                <form action="/admin-add-delivery" method="POST" class="footer-form">
+                    <p class="footer-list-title">Add Delivery Guy</p>
+                    <input
+                        style="margin-bottom: 20px"
+                        type="text"
+                        name="name"
+                        required
+                        placeholder="Enter Name"
+                        aria-label="Enter Name"
+                        class="input-field"
+                    />
+                    <input
+                        style="margin-bottom: 20px"
+                        type="number"
+                        name="phone"
+                        required
+                        placeholder="Phone"
+                        aria-label="Phone"
+                        class="input-field"
+                    />
+                    <input
+                        style="margin-bottom: 20px"
+                        type="text"
+                        name="email"
+                        required
+                        placeholder="Enter email"
+                        aria-label="Enter email"
+                        class="input-field"
+                    />
+                    <input
+                        style="margin-bottom: 20px"
+                        type="password"
+                        name="password"
+                        required
+                        placeholder="Password"
+                        aria-label="Enter email"
+                        class="input-field"
+                    />
+
+                    <button type="submit" class="btn">Add to team</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="about-content" style="margin-top: -100px">
+            <section
+                id="cart"
+                class="section-p1"
+                style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+            >
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <td>Sno.</td>
+                            <td>Name</td>
+                            <td>Phone</td>
+                            <td>Email</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {%for delivery in delivery_guys%}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{delivery['name']}}</td>
+                            <td>{{delivery['email']}}</td>
+                            <td>{{delivery['phone']}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</section>
+
+{% include "footer.html" %}

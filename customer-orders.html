@@ -1,0 +1,40 @@
+{% include "customer-head-active.html" %}
+
+<section id="about">
+    <div class="container">
+        <h2 style="text-align: center; color: #eb8314; margin-top: 150px; margin-bottom: 20px">
+            Current and older orders
+        </h2>
+        <section
+            id="cart"
+            class="section-p1"
+            style="margin-bottom: 0px; width: 100%; display: flex; justify-content: center; align-items: center"
+        >
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <td>Order Id</td>
+                        <td>Order Date</td>
+                        <td>Order Total</td>
+                        <td>Delivery Mode</td>
+                        <td>Status</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for order in orders%}
+                    <tr>
+                        <td>{{ getUpperIdFromOrderId(order['_id']) }}</td>
+                        <td>{{order['order_date']}}</td>
+                        <td>{{order['amount']}}</td>
+                        <td>{{order['delivery_type']}}</td>
+                        <td>{{order['status']}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</section>
+
+{% include "footer.html" %}
